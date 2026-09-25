@@ -216,3 +216,34 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment variables
+.env
+.env.*
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Audio / generated files
+*.wav
+*.mp3
+*.flac
+uploads/
+outputs/
