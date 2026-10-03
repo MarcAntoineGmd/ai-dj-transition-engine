@@ -113,5 +113,8 @@ http://localhost:5173
 
 ## Development Status
 
-0. Project setup and basic frontend/backend communication.
-1. Audio file upload and validation (backend endpoint complete; frontend upload UI in progress).
+## Development Status
+
+Phase 0 — Project setup and basic frontend/backend communication.
++ Phase 1 — Audio file upload and validation (backend endpoint + frontend upload UI complete).
++ Phase 2 — Audio analysis (BPM, key, energy, spectral features) — in progress.
