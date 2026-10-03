@@ -6,7 +6,7 @@ An AI-powered DJ application that analyzes two songs and generates intelligent, 
 
 * Frontend: React, TypeScript, Vite
 * Backend: Python, FastAPI
-* Audio Processing: librosa, NumPy, SciPy
+* Audio Processing: librosa, NumPy, SciPy, soundfile
 * Machine Learning: PyTorch
 * Testing: pytest, Vitest
 * Infrastructure: Docker, GitHub Actions
@@ -72,6 +72,29 @@ Health check:
 http://127.0.0.1:8000/health
 ```
 
+## API Endpoints
+
+### `GET /health`
+
+Returns server status.
+
+```json
+{ "status": "ok" }
+```
+
+### `POST /api/audio/upload`
+
+Uploads an audio file (`.mp3` or `.wav`, max 50 MB) and returns its metadata.
+
+```json
+{
+  "id": "generated-uuid",
+  "filename": "song.mp3",
+  "duration": 214.3,
+  "sample_rate": 44100
+}
+```
+
 ## Running the Frontend
 
 From the `frontend` directory:
@@ -90,4 +113,5 @@ http://localhost:5173
 
 ## Development Status
 
-Phase 0 — Project setup and basic frontend/backend communication.
+Phase 0 — Project setup and basic frontend/backend communication. ✅
+Phase 1 — Audio file upload and validation (backend endpoint complete; frontend upload UI in progress).
