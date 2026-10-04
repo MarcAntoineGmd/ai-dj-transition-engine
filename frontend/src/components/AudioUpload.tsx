@@ -1,3 +1,15 @@
+/**
+ * Feature: Audio upload UI
+ * Purpose: Let the user pick an audio file, send it to the backend, and
+ *          display the returned metadata or error.
+ * Main files: src/components/AudioUpload.tsx
+ * How it works: file input -> FormData -> fetch POST -> display result
+ *               or error message.
+ * Concepts learned: FormData for multipart uploads, multi-value React
+ *                    state (idle/uploading/done/error), propagating
+ *                    backend HTTP errors to the UI.
+ */
+
 import { useState } from "react";
 
 interface UploadResult {

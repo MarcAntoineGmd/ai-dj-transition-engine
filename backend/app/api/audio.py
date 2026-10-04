@@ -1,3 +1,15 @@
+"""
+Feature: Audio file upload endpoint
+Purpose: Accept an audio file from the client, validate it, store it
+         temporarily, and return its basic metadata.
+Main files: app/api/audio.py
+How it works: validate extension -> read and check size -> save with a
+              UUID filename -> read metadata via soundfile -> return JSON.
+Concepts learned: UploadFile and multipart/form-data, two-level file
+                   validation, UUIDs to avoid filename collisions, path
+                   injection prevention.
+"""
+
 import uuid
 from pathlib import Path
 
