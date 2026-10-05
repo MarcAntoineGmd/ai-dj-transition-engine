@@ -1,17 +1,19 @@
 /**
- * Feature: Audio upload and analysis UI
+ * Feature: Audio upload and analysis trigger
  * Purpose: Let the user pick an audio file, upload it, then automatically
- *          trigger analysis and display BPM, key and average energy.
+ *          trigger analysis. Delegates result display to
+ *          AnalysisResults.
  * Main files: src/components/AudioUpload.tsx
  * How it works: file input -> upload via FormData/fetch -> on success,
- *               call /analyze/{id} -> display both results or errors.
+ *               call /analyze/{id} -> pass results to AnalysisResults.
  * Concepts learned: chaining two dependent async requests, FormData for
  *                    multipart uploads, multi-value React state,
- *                    propagating backend HTTP errors to the UI.
+ *                    propagating backend HTTP errors to the UI,
+ *                    delegating presentation to a child component.
  */
 
 import { useState } from "react";
-import { WaveformPlayer } from "./WaveformPlayer";
+import { AnalysisResults } from "./AnalysisResults";
 
 interface UploadResult {
   id: string;
@@ -89,11 +91,6 @@ export function AudioUpload() {
     }
   }
 
-  const averageEnergy =
-    analysis && analysis.energy.length > 0
-      ? analysis.energy.reduce((sum, v) => sum + v, 0) / analysis.energy.length
-      : null;
-
   return (
     <div className="p-4 border rounded">
       <input
@@ -117,14 +114,8 @@ export function AudioUpload() {
         </p>
       )}
 
-      {file && <WaveformPlayer file={file} beatTimes={analysis?.beat_times} />}
-
-      {status === "done" && analysis && (
-        <div className="mt-4 p-3 bg-gray-100 rounded">
-          <p>BPM : {analysis.bpm.toFixed(2)}</p>
-          <p>Clé : {analysis.key}</p>
-          <p>Énergie moyenne : {averageEnergy?.toFixed(4)}</p>
-        </div>
+      {status === "done" && analysis && file && (
+        <AnalysisResults file={file} analysis={analysis} />
       )}
 
       {status === "error" && (
