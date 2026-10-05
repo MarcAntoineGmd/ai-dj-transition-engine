@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))  # pour importer "app"
 
 from app.audio.beat_tracker import detect_beats
 from app.audio.feature_extractor import extract_features
+from app.audio.key_detector import detect_key
 
 if len(sys.argv) != 2:
     print("Usage: python scripts/test_bpm.py <chemin_vers_fichier_audio>")
@@ -28,9 +29,11 @@ if not audio_path.exists():
 
 bpm, beat_times = detect_beats(audio_path)
 features = extract_features(audio_path)
+key = detect_key(audio_path)
 
 print(f"Fichier : {audio_path.name}")
 print(f"BPM estimé : {bpm:.2f}")
+print(f"Clé estimée : {key}")
 print(f"Nombre de beats détectés : {len(beat_times)}")
 print(f"5 premiers beats (secondes) : {beat_times[:5]}")
 print(f"Centroid spectral moyen : {features['spectral_centroid_mean']:.1f} Hz")
