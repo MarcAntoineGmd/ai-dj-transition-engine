@@ -160,7 +160,7 @@ Uploading a file automatically triggers analysis and displays BPM, key, and aver
 * `WaveformPlayer.tsx` — WaveSurfer.js wrapper with play/pause and beat markers
 * `EnergyChart.tsx` — simple SVG energy curve
 
-### `POST /api/transition/suggest/{file_id}`
+## `POST /api/transition/suggest/{file_id}`
 
 Generates and scores candidate transition points for a previously uploaded file.
 
