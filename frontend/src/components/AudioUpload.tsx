@@ -117,7 +117,7 @@ export function AudioUpload() {
         </p>
       )}
 
-      {file && <WaveformPlayer file={file} />}
+      {file && <WaveformPlayer file={file} beatTimes={analysis?.beat_times} />}
 
       {status === "done" && analysis && (
         <div className="mt-4 p-3 bg-gray-100 rounded">
