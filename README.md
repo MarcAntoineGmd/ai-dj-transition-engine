@@ -120,6 +120,17 @@ Runs full audio analysis on a previously uploaded file: beat detection, key esti
 }
 ```
 
+### `POST /api/transition/suggest/{file_id}`
+
+Generates and scores candidate transition points for a previously uploaded file.
+
+```json
+[
+  { "timestamp": 114.25, "score": 0.866 },
+  { "timestamp": 88.46, "score": 0.826 }
+]
+```
+
 **Known limitation:** key detection (Krumhansl-Schmuckler chroma correlation) can confuse a key with its relative major/minor (e.g. F# major vs D# minor), since both share the same 7 notes. Noted for revisiting during transition quality scoring (Phase 7) if it proves impactful.
 
 ## Audio Analysis Modules
@@ -159,17 +170,6 @@ Uploading a file automatically triggers analysis and displays BPM, key, and aver
 * `AnalysisResults.tsx` — displays waveform (with beat markers), BPM/key/energy summary, and energy curve
 * `WaveformPlayer.tsx` — WaveSurfer.js wrapper with play/pause and beat markers
 * `EnergyChart.tsx` — simple SVG energy curve
-
-## POST /api/transition/suggest/{file_id}
-
-Generates and scores candidate transition points for a previously uploaded file.
-
-```json
-[
-  { "timestamp": 114.25, "score": 0.866 },
-  { "timestamp": 88.46, "score": 0.826 }
-]
-```
 
 **Known limitation:** candidate generation assumes 4 beats per musical bar; structure scoring is a simple position-based heuristic, not true verse/chorus detection.
 
