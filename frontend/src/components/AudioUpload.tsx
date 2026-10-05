@@ -11,6 +11,7 @@
  */
 
 import { useState } from "react";
+import { WaveformPlayer } from "./WaveformPlayer";
 
 interface UploadResult {
   id: string;
@@ -115,6 +116,8 @@ export function AudioUpload() {
           {uploadResult.filename} — {uploadResult.duration.toFixed(1)}s
         </p>
       )}
+
+      {file && <WaveformPlayer file={file} />}
 
       {status === "done" && analysis && (
         <div className="mt-4 p-3 bg-gray-100 rounded">
