@@ -153,9 +153,17 @@ http://localhost:5173
 
 Uploading a file automatically triggers analysis and displays BPM, key, and average energy.
 
+## Frontend Components
+
+* `AudioUpload.tsx` — handles file selection, upload, and triggering analysis
+* `AnalysisResults.tsx` — displays waveform (with beat markers), BPM/key/energy summary, and energy curve
+* `WaveformPlayer.tsx` — WaveSurfer.js wrapper with play/pause and beat markers
+* `EnergyChart.tsx` — simple SVG energy curve
+
 ## Development Status
 
-- Phase 0 — Project setup and basic frontend/backend communication.
-- Phase 1 — Audio file upload and validation.
-- Phase 2 — Audio analysis (BPM, beats, key, energy, spectral features) and frontend display.
-- Phase 3 — Visualization (waveform, energy curve, beat markers) — up next.
++ Phase 0 — Project setup and basic frontend/backend communication.
++ Phase 1 — Audio file upload and validation.
++ Phase 2 — Audio analysis (BPM, beats, key, energy, spectral features) and frontend display.
++ Phase 3 — Visualization (waveform with beat markers, energy curve) — frontend UI styling left for later.
++ Phase 4 — Transition point detection — IN PROGRESS...
