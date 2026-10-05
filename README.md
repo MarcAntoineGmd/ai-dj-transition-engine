@@ -155,7 +155,7 @@ Uploading a file automatically triggers analysis and displays BPM, key, and aver
 
 ## Development Status
 
-Phase 0 — Project setup and basic frontend/backend communication. ✅
-Phase 1 — Audio file upload and validation. ✅
-Phase 2 — Audio analysis (BPM, beats, key, energy, spectral features) and frontend display. ✅
-Phase 3 — Visualization (waveform, energy curve, beat markers) — up next.
+- Phase 0 — Project setup and basic frontend/backend communication.
+- Phase 1 — Audio file upload and validation.
+- Phase 2 — Audio analysis (BPM, beats, key, energy, spectral features) and frontend display.
+- Phase 3 — Visualization (waveform, energy curve, beat markers) — up next.
