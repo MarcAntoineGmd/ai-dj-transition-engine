@@ -139,13 +139,6 @@ python scripts\test_bpm.py tmp_uploads\<filename>
 
 From the `frontend` directory:
 
-## Frontend Components
-
-* `AudioUpload.tsx` — handles file selection, upload, and triggering analysis
-* `AnalysisResults.tsx` — displays waveform (with beat markers), BPM/key/energy summary, and energy curve
-* `WaveformPlayer.tsx` — WaveSurfer.js wrapper with play/pause and beat markers
-* `EnergyChart.tsx` — simple SVG energy curve
-
 ```bash
 cd frontend
 npm install
@@ -159,6 +152,13 @@ http://localhost:5173
 ```
 
 Uploading a file automatically triggers analysis and displays BPM, key, and average energy.
+
+## Frontend Components
+
+* `AudioUpload.tsx` — handles file selection, upload, and triggering analysis
+* `AnalysisResults.tsx` — displays waveform (with beat markers), BPM/key/energy summary, and energy curve
+* `WaveformPlayer.tsx` — WaveSurfer.js wrapper with play/pause and beat markers
+* `EnergyChart.tsx` — simple SVG energy curve
 
 ## Development Status
 
