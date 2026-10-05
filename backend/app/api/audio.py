@@ -11,10 +11,12 @@ Concepts learned: UploadFile and multipart/form-data, two-level file
 """
 
 import uuid
-from pathlib import Path
-
-from fastapi import APIRouter, HTTPException, UploadFile
 import soundfile as sf
+
+from app.audio.analyzer import analyze_song
+from app.models.song_analysis import SongAnalysis
+from pathlib import Path
+from fastapi import APIRouter, HTTPException, UploadFile
 
 router = APIRouter()
 
@@ -24,6 +26,13 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 ALLOWED_EXTENSIONS = {".mp3", ".wav"}
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 Mo
 
+@router.post("/analyze/{file_id}", response_model=SongAnalysis)
+async def analyze_audio(file_id: str):
+    matches = list(UPLOAD_DIR.glob(f"{file_id}.*"))
+    if not matches:
+        raise HTTPException(status_code=404, detail="Fichier introuvable")
+
+    return analyze_song(matches[0], file_id)
 
 @router.post("/upload")
 async def upload_audio(file: UploadFile):
