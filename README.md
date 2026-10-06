@@ -133,6 +133,28 @@ Generates and scores candidate transition points for a previously uploaded file.
 
 **Known limitation:** key detection (Krumhansl-Schmuckler chroma correlation) can confuse a key with its relative major/minor (e.g. F# major vs D# minor), since both share the same 7 notes. Noted for revisiting during transition quality scoring (Phase 7) if it proves impactful.
 
+### `POST /api/transition/bpm-match`
+
+Determines BPM compatibility strategy between two uploaded songs.
+
+Request body:
+```json
+{ "file_id_a": "...", "file_id_b": "..." }
+```
+
+Response:
+```json
+{
+  "strategy": "meet_in_middle",
+  "target_bpm": 103.56,
+  "stretch_factor_a": 0.9018,
+  "stretch_factor_b": 1.1222,
+  "within_safe_limit": false
+}
+```
+
+**Known limitation:** `within_safe_limit` is advisory only — the endpoint does not block the result even when the required stretch exceeds the ±6% safety margin; that decision is left to the caller.
+
 ## Audio Analysis Modules
 
 * `app/audio/beat_tracker.py` — BPM and beat position detection via `librosa.beat.beat_track`
@@ -180,4 +202,5 @@ Uploading a file automatically triggers analysis and displays BPM, key, and aver
 + Phase 2 — Audio analysis (BPM, beats, key, energy, spectral features) and frontend display.
 + Phase 3 — Visualization (waveform with beat markers, energy curve) — frontend UI styling left for later.
 + Phase 4 — Transition point detection (candidate generation + scoring).
-+ Phase 5 — BPM compatibility between two songs — IN PROGRESS...
++ Phase 5 — BPM compatibility between two songs.
++ Phase 6 — Transition engine (crossfade, tempo adjustment) — up next.
