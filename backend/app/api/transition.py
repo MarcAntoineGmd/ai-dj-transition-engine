@@ -21,6 +21,8 @@ from app.audio.feature_extractor import extract_features
 from app.transition.candidate_generator import generate_candidates
 from app.transition.scorer import score_candidates
 from app.models.transition import TransitionCandidate
+from app.transition.bpm_matcher import match_bpm
+from app.models.transition import BpmMatchRequest, BpmMatchResult
 
 router = APIRouter()
 
@@ -43,3 +45,20 @@ async def suggest_transitions(file_id: str):
     scored = score_candidates(candidates, features["energy"], duration)
 
     return scored
+
+def _find_file(file_id: str) -> Path:
+    matches = list(UPLOAD_DIR.glob(f"{file_id}.*"))
+    if not matches:
+        raise HTTPException(status_code=404, detail=f"Fichier introuvable : {file_id}")
+    return matches[0]
+
+
+@router.post("/bpm-match", response_model=BpmMatchResult)
+async def bpm_match(request: BpmMatchRequest):
+    file_a = _find_file(request.file_id_a)
+    file_b = _find_file(request.file_id_b)
+
+    bpm_a, _ = detect_beats(file_a)
+    bpm_b, _ = detect_beats(file_b)
+
+    return match_bpm(bpm_a, bpm_b)

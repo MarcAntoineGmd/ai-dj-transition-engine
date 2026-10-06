@@ -15,3 +15,14 @@ from pydantic import BaseModel
 class TransitionCandidate(BaseModel):
     timestamp: float
     score: float
+
+class BpmMatchRequest(BaseModel):
+    file_id_a: str
+    file_id_b: str
+
+class BpmMatchResult(BaseModel):
+    strategy: str
+    target_bpm: float
+    stretch_factor_a: float
+    stretch_factor_b: float
+    within_safe_limit: bool
