@@ -26,3 +26,7 @@ class BpmMatchResult(BaseModel):
     stretch_factor_a: float
     stretch_factor_b: float
     within_safe_limit: bool
+
+class TransitionGenerateRequest(BaseModel):
+    file_id_a: str
+    file_id_b: str

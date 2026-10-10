@@ -24,6 +24,11 @@ from app.models.transition import TransitionCandidate
 from app.transition.bpm_matcher import match_bpm
 from app.models.transition import BpmMatchRequest, BpmMatchResult
 
+from fastapi.responses import FileResponse
+
+from app.transition.engine import generate_transition
+from app.models.transition import TransitionGenerateRequest
+
 router = APIRouter()
 
 UPLOAD_DIR = Path("tmp_uploads")
@@ -62,3 +67,16 @@ async def bpm_match(request: BpmMatchRequest):
     bpm_b, _ = detect_beats(file_b)
 
     return match_bpm(bpm_a, bpm_b)
+
+@router.post("/generate")
+async def generate(request: TransitionGenerateRequest):
+    file_a = _find_file(request.file_id_a)
+    file_b = _find_file(request.file_id_b)
+
+    output_path = generate_transition(file_a, file_b, UPLOAD_DIR)
+
+    return FileResponse(
+        path=output_path,
+        media_type="audio/wav",
+        filename=output_path.name,
+    )
