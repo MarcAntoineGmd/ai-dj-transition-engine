@@ -30,7 +30,7 @@ def _nearest_beat(target_time: float, beat_times: list[float]) -> float:
     return min(beat_times, key=lambda t: abs(t - target_time))
 
 
-def generate_transition(song_a: Path, song_b: Path, output_dir: Path) -> Path:
+def generate_transition(song_a: Path, song_b: Path, output_dir: Path, start_a: float | None = None, ) -> Path:
     """
     Génère une transition entre song_a et song_b, écrit le résultat
     dans output_dir, et retourne le chemin du fichier produit.
@@ -40,7 +40,8 @@ def generate_transition(song_a: Path, song_b: Path, output_dir: Path) -> Path:
     match = match_bpm(bpm_a, bpm_b)
 
     duration_a = sf.info(str(song_a)).duration
-    start_a = _nearest_beat(duration_a - TRANSITION_DURATION, beat_times_a)
+    target_a = start_a if start_a is not None else duration_a - TRANSITION_DURATION
+    start_a = _nearest_beat(target_a, beat_times_a)
     start_b = beat_times_b[0]
 
     outro_a_path = output_dir / "_outro_a.wav"

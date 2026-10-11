@@ -30,3 +30,15 @@ class BpmMatchResult(BaseModel):
 class TransitionGenerateRequest(BaseModel):
     file_id_a: str
     file_id_b: str
+    start_a: float | None = None
+
+class TransitionRankRequest(BaseModel):
+    file_id_a: str
+    file_id_b: str
+
+
+class RankedTransition(BaseModel):
+    start_a: float
+    start_b: float
+    total: float
+    scores: dict[str, float]

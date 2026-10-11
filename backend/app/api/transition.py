@@ -1,21 +1,20 @@
 """
-Feature: Transition suggestion endpoint
-Purpose: Expose the candidate generation and scoring pipeline over
-         HTTP, returning the best transition points for a given
-         uploaded song.
+Feature: Transition endpoints
+Purpose: Expose the transition pipeline over HTTP: candidate suggestion,
+         BPM matching, ranking of full transitions between two songs,
+         and audio generation.
 Main files: app/api/transition.py
-How it works: locate the uploaded file by id -> run beat detection and
-              feature extraction -> generate candidates -> score and
-              sort them -> return as a list of TransitionCandidate.
-Concepts learned: reusing existing analysis modules behind a new route
-                   rather than duplicating logic.
+How it works: locate uploaded files by id -> call the analysis, scoring
+              and engine modules -> return JSON (suggest, bpm-match,
+              rank) or a .wav file (generate).
+Concepts learned: reusing existing modules behind several routes,
+                   JSON vs FileResponse, optional request fields that
+                   keep earlier behavior unchanged.
 """
 
 from pathlib import Path
-
 from fastapi import APIRouter, HTTPException
 import soundfile as sf
-
 from app.audio.beat_tracker import detect_beats
 from app.audio.feature_extractor import extract_features
 from app.transition.candidate_generator import generate_candidates
@@ -23,11 +22,12 @@ from app.transition.scorer import score_candidates
 from app.models.transition import TransitionCandidate
 from app.transition.bpm_matcher import match_bpm
 from app.models.transition import BpmMatchRequest, BpmMatchResult
-
 from fastapi.responses import FileResponse
-
 from app.transition.engine import generate_transition
 from app.models.transition import TransitionGenerateRequest
+from app.audio.analyzer import analyze_song
+from app.transition.selector import rank_transitions
+from app.models.transition import RankedTransition, TransitionRankRequest
 
 router = APIRouter()
 
@@ -73,10 +73,22 @@ async def generate(request: TransitionGenerateRequest):
     file_a = _find_file(request.file_id_a)
     file_b = _find_file(request.file_id_b)
 
-    output_path = generate_transition(file_a, file_b, UPLOAD_DIR)
+    output_path = generate_transition(file_a, file_b, UPLOAD_DIR, request.start_a)
 
     return FileResponse(
         path=output_path,
         media_type="audio/wav",
         filename=output_path.name,
     )
+
+@router.post("/rank", response_model=list[RankedTransition])
+async def rank(request: TransitionRankRequest):
+    file_a = _find_file(request.file_id_a)
+    file_b = _find_file(request.file_id_b)
+
+    analysis_a = analyze_song(file_a, request.file_id_a)
+    analysis_b = analyze_song(file_b, request.file_id_b)
+    duration_a = sf.info(str(file_a)).duration
+    duration_b = sf.info(str(file_b)).duration
+
+    return rank_transitions(analysis_a, analysis_b, duration_a, duration_b)
