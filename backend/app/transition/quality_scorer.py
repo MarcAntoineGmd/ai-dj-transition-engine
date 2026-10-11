@@ -83,7 +83,7 @@ def key_score(key_a: str, key_b: str) -> float:
     return max(0.0, 0.4 - 0.1 * (distance - 2))
 
 
-def _local_energy(
+def local_energy(
     energy: list[float], timestamp: float, duration: float, window: float
 ) -> float:
     """Énergie moyenne sur [timestamp, timestamp + window], normalisée par le max du morceau."""
@@ -104,8 +104,8 @@ def energy_score(
     energy_b: list[float], t_b: float, duration_b: float,
 ) -> float:
     """1.0 si l'intensité relative des deux morceaux est identique sur la fenêtre de transition."""
-    local_a = _local_energy(energy_a, t_a, duration_a, ENERGY_WINDOW_SECONDS)
-    local_b = _local_energy(energy_b, t_b, duration_b, ENERGY_WINDOW_SECONDS)
+    local_a = local_energy(energy_a, t_a, duration_a, ENERGY_WINDOW_SECONDS)
+    local_b = local_energy(energy_b, t_b, duration_b, ENERGY_WINDOW_SECONDS)
     return 1.0 - abs(local_a - local_b)
 
 
