@@ -38,6 +38,8 @@ ai-dj-transition-engine/
 │   ├── tmp_uploads/        (created at runtime, keep out of version control)
 │   └── tests/
 ├── ml/
+│   ├── data/               (datasets, ratings)
+│   └── songs/              (local audio, git-ignored)
 ├── docs/
 ├── scripts/
 ├── docker-compose.yml
@@ -232,6 +234,19 @@ Request body:
 
 The composite quality score combines five sub-scores with experimental weights: beat 0.30, BPM 0.20, key 0.15, energy 0.20, spectral 0.15.
 
+## Machine Learning Modules
+
+* `app/ml/features.py`: 9-number feature vector describing a candidate transition (five rule-based sub-scores plus local energy of each song, position in song A and available transition length)
+* `app/ml/dataset.py`: samples random transitions between songs and writes CSV rows with an empty `rating` column
+
+Build a dataset from a local folder of songs (kept out of version control):
+
+```powershell
+python scripts\build_dataset.py ..\ml\songs -n 100
+```
+
+The CSV is written to `ml/data/transitions.csv`. The script refuses to overwrite an existing file unless `--force` is given, because that file will later hold human ratings.
+
 ## Manual Test Scripts
 
 Analysis and transition modules can be checked outside the API. Run these from the `backend` directory with the virtual environment activated:
@@ -246,6 +261,7 @@ python scripts\test_crossfade.py tmp_uploads\<a> tmp_uploads\<b>           # ful
 python scripts\test_quality_scorer.py                                      # BPM and key sub-scores
 python scripts\test_quality_composite.py tmp_uploads\<a> tmp_uploads\<b>   # composite score per start point
 python scripts\test_selector.py tmp_uploads\<a> tmp_uploads\<b>            # candidate ranking
+python scripts\test_features.py tmp_uploads\<a> tmp_uploads\<b>            # feature vectors of the top transitions
 ```
 
 Some scripts write intermediate `.wav` files next to the input file.
@@ -310,4 +326,5 @@ The application is meant to be used with audio you have the right to process. Do
 * Phase 5: BPM compatibility between two songs.
 * Phase 6: Transition engine (beat-aligned extraction, time-stretch, equal-power crossfade).
 * Phase 7: Transition quality scoring (composite score and candidate ranking).
-* Phase 8: Machine learning (problem definition and feature export). Up next.
+* Phase 8: Machine learning (feature vector and dataset builder).
+* Phase 9: Dataset collection (human ratings of transitions). Up next.
