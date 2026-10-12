@@ -1,4 +1,4 @@
-# AI DJ Transition Engine
+# AI DJ Transition Engine : Personal AI/ML Project
 
 An AI-powered DJ application that analyzes two songs and generates intelligent, beat-aligned transitions.
 
