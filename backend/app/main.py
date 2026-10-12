@@ -9,17 +9,16 @@ Concepts learned: CORS between frontend and backend origins, router
 """
 
 from fastapi import FastAPI
+
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.audio import router as audio_router
 
 from app.api.transition import router as transition_router
 
+from app.api.rating import router as rating_router
+
 app = FastAPI()
-
-app.include_router(audio_router, prefix="/api/audio")
-
-app.include_router(transition_router, prefix="/api/transition")
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,6 +27,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(rating_router, prefix="/api/rating")
+
+app.include_router(audio_router, prefix="/api/audio")
+
+app.include_router(transition_router, prefix="/api/transition")
 
 @app.get("/health")
 def health():

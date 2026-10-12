@@ -17,6 +17,8 @@ from pathlib import Path
 
 import soundfile as sf
 
+import numpy as np
+
 from app.audio.beat_tracker import detect_beats
 from app.transition.bpm_matcher import match_bpm
 from app.transition.segment_extractor import extract_segment
@@ -59,6 +61,10 @@ def generate_transition(song_a: Path, song_b: Path, output_dir: Path, start_a: f
     y_b, _ = sf.read(str(stretched_b_path))
 
     result = crossfade(y_a, y_b)
+
+    peak = float(np.max(np.abs(result)))
+    if peak > 1.0:
+        result = result / peak
 
     output_path = output_dir / f"transition_{song_a.stem}_{song_b.stem}.wav"
     sf.write(str(output_path), result, sr)

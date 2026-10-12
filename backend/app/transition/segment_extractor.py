@@ -32,4 +32,4 @@ def extract_segment(
 
     segment = y[start_sample:end_sample]
 
-    sf.write(str(output_path), segment, sr)
+    sf.write(str(output_path), segment, sr, subtype="FLOAT")

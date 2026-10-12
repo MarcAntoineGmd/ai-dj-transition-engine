@@ -249,3 +249,5 @@ uploads/
 outputs/
 
 ml/songs/
+ml/data/clips/
+ml/data/test_*

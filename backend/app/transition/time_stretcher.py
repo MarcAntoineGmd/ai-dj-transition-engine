@@ -27,4 +27,4 @@ def stretch_audio(file_path: str | Path, factor: float, output_path: str | Path)
 
     stretched = librosa.effects.time_stretch(y, rate=factor)
 
-    sf.write(str(output_path), stretched, sr)
+    sf.write(str(output_path), stretched, sr, subtype="FLOAT")
